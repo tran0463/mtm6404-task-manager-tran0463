@@ -37,32 +37,99 @@
 // }
 
 
-
+// Most useless way to use child prop
+function Title (props) {
+    return <h2>{props.children}</h2>
+}
 
 // list rendering
 
-const listItems = [
-    {task:"Task 1"},
-    {task:"Task 2"},
-    {task:"Task 3"},
-    {task:"Task 4"},
-    {task:"Task 5"}
+const Shopping = [
+    {listItem:"apple"},
+    {listItem:"banana"},
+    {listItem:"cucumber"},
+    {listItem:"pineapple"},
+    {listItem:"watermelon"}
 ]
+const Gifts = [
+    {listItem:"dog toy"},
+    {listItem:"knife"},
+    {listItem:"desk"},
+    {listItem:"computer"},
+    {listItem:"car"}
+]
+const Games = [
+    {listItem:"go"},
+    {listItem:"checkers"},
+    {listItem:"chess"},
+    {listItem:"battleship"},
+    {listItem:"risk"}
+]
+const Empty = []
 
-export default function Main() {
-    const list = listItems.map(item => 
+// Conditional Rendering
+export default function Main({showList}) {
+    //Depending on the prop passed, it will show a different list
+        
+        if (showList == "Shopping") {
+        const list = Shopping.map(item => 
         <div className="task">
             <div>
                 <input type="checkbox" />
-                <ul>{item.task}</ul>
+                <ul>{item.listItem}</ul>
             </div>
-        </div>
-    )
+        </div>)
 
-    return (
-        <div className="main">
-            <h2>Tasks</h2>
-                {list}
-        </div>
-    )
+        return (
+            <div className="main">
+                {list.length > 0 && <Title>{showList}</Title>}
+                {list.length == 0 && <h2>This list is currently empty</h2>}
+                {/* Possible to have both elements rendered in one condition check? */}
+                {list.length > 0 && <div>{list}</div>}
+            </div>
+    )}
+
+     else if (showList == "Gifts") {
+
+        const list = Gifts.map(item => 
+            <div className="task">
+                <div>
+                    <input type="checkbox" />
+                    <ul>{item.listItem}</ul>
+                </div>
+            </div>)
+
+        return (
+            <div className="main">
+                {list.length > 0 && <Title>{showList}</Title>}
+                {list.length == 0 && <h2>This list is currently empty</h2>}
+                {list.length > 0 && <div>{list}</div>}
+            </div>
+    )} 
+    
+    else if (showList == "Games") {
+
+        const list = Games.map(item => 
+            <div className="task">
+                <div>
+                    <input type="checkbox" />
+                    <ul>{item.listItem}</ul>
+                </div>
+            </div>)
+            
+        return (
+            <div className="main">
+                {list.length > 0 && <Title>{showList}</Title>}
+                {list.length == 0 && <h2>This list is currently empty</h2>}
+                {list.length > 0 && <div>{list}</div>}
+            </div>
+    )} 
+    
+    else {
+        // default case
+        return (
+            <div className="main">
+                <p>No list selected</p>
+            </div>
+        )} 
 }

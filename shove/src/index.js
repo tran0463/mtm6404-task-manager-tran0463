@@ -6,12 +6,17 @@ import Main from './comp/Main'
 import Footer from './comp/Footer'
 import * as styles from './style.css'
 
+// let selectedList = ''
+let selectedList = 'Shopping'
+
 function Page() {
     return (
         <div>
         <Header />
         <Sidebar />
-        <Main />
+        <Main 
+        showList={selectedList}
+        />
         <Footer />
         </div>
     )
