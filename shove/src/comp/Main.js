@@ -1,6 +1,6 @@
 import { useState } from 'react'
 let list = []
-let id = 1
+let id = 0
 let selected = []
 if (localStorage.length > 0) {
     list = JSON.parse(localStorage.getItem('list'))
