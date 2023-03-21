@@ -1,6 +1,6 @@
 import { useState } from 'react'
 let list = []
-let id = 0
+let id = 1
 let selected = []
 if (localStorage.length > 0) {
     list = JSON.parse(localStorage.getItem('list'))
@@ -19,35 +19,20 @@ sortList()
 console.log(sortedList)
 export default function Main() {
     const [count, setCount] = useState("")
+    const [handleClickUpdate, setHandleClickUpdate] = useState("")
 
     const handleClick = (e) => {
         e.preventDefault()
         list.push({
             name: e.target[0].value,
             priority: e.target[1].value,
-            status: e.target[2].value,
-            index: id
+            completed: e.target[2].value == 'true' ? true : false,
+            index: id,
         })
         localStorage.setItem("list", JSON.stringify(list))
         setCount(count + 1)
         id++
         sortList()
-    }
-
-    const markComplete = (e) => {
-        selected.forEach(element => {
-            console.log(element)
-            list[element].status = 'Complete'
-            console.log(list)
-        });
-    }    
-    
-    const markIncomplete = (e) => {
-        
-    }    
-    
-    const deleteSelected = (e) => {
-        
     }
 
     return (
@@ -61,41 +46,47 @@ export default function Main() {
                     <option value={3}>3</option>
                     <option value={4}>4</option>
                     <option value={5}>5</option>
-                    <option value={' '}>!</option>
                 </select>
-                <select name="status">
-                    <option value={'Incomplete'}>Incomplete</option>
-                    <option value={'Complete'}>Complete</option>
+                <select name="completed">
+                    <option value={false}>Incomplete</option>
+                    <option value={true}>Complete</option>
                 </select>
                 <input type="submit" value="Add Task"/>
             </form>
 
-                <span className='complete' onClick={markComplete}>Mark Complete</span>
+                {/* <span className='complete' onClick={markComplete}>Mark Complete</span>
                 <span className='incomplete' onClick={markIncomplete}>Mark Incomplete</span>
-                <span className='delete' onClick={deleteSelected}>Delete</span>
+                <span className='delete' onClick={deleteSelected}>Delete</span> */}
 
-            {list && list.map((list, Task) => 
+            {list && list.map((element, Task) => 
             <div className="task" key={Task}>
                 <div>
                     <div>
                         
-                        <input type="checkbox" onClick={function selectedTask() {
+                        <input type="checkbox" onClick={function selectedTask(event) {
                             // clicking checkbox will store task id to separate array
-                            if (selected.find(id => id === list.index)) {
-                                selected.splice(selected.indexOf(id),1)
-                            } else {
-                                selected.push(list.index)
-                            }
+                            // const item = selected.find(id => id === element.index) 
+                            // if (item)  { // MUST be indexOf
+                            //     item.completed = false
+                            //     // selected = selected.splice(selected.indexOf(list.index),1)
+
+                            // }
+                            //  else {
+                            //     item.completed = true
+                            //     // selected.push(list.index)
+                            // }
+                            element.completed = event.currentTarget.checked
+                            setHandleClickUpdate(handleClickUpdate + 1)
                             console.log(selected)
-                            console.log(list)
+                            console.log(element)
                         }} />
 
 
 
-                        <h3>{list.name}</h3>
+                        <h3>{element.name}</h3>
                     </div>
-                    <h4>Priority: {list.priority}</h4>
-                    <h4>Status: {list.status}</h4>
+                    <h4>Priority: {element.priority}</h4>
+                    <h4>Status: {element.completed ? "Completed" : "Incomplete"} </h4> 
                 </div>
             </div>  
             )}
