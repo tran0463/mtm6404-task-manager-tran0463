@@ -1,12 +1,11 @@
 import { useState } from 'react'
 let list = []
-let id = 1
-let selected = []
+// let id = 1
+// let selected = []
 if (localStorage.length > 0) {
     list = JSON.parse(localStorage.getItem('list'))
-    id = list.length
 }
-console.log(list)
+// console.log(list)
 
 
 // sort list before display
@@ -18,23 +17,30 @@ sortList()
 
 console.log(sortedList)
 export default function Main() {
-    const [count, setCount] = useState("")
-    const [handleClickUpdate, setHandleClickUpdate] = useState("")
+    const [task, setTask] = useState(list)
+    const [status, setStatus] = useState(list.completed)
+
+    const completeTask = (e) => {
+        setStatus(
+            list.completed = "Complete",
+            console.log(task)
+        )
+    }
 
     const handleClick = (e) => {
         e.preventDefault()
-        list.push({
+        setTask(
+            list.push({
             name: e.target[0].value,
             priority: e.target[1].value,
-            completed: e.target[2].value == 'true' ? true : false,
-            index: id,
+            completed: e.target[2].value,
+            // index:
         })
+        )
         localStorage.setItem("list", JSON.stringify(list))
-        setCount(count + 1)
-        id++
-        sortList()
     }
-
+        
+        sortList()  
     return (
         <div className='main'>
             <form onSubmit={handleClick}>
@@ -47,49 +53,26 @@ export default function Main() {
                     <option value={4}>4</option>
                     <option value={5}>5</option>
                 </select>
-                <select name="completed">
-                    <option value={false}>Incomplete</option>
-                    <option value={true}>Complete</option>
+                <select name="status">
+                    <option>Incomplete</option>
+                    <option>Complete</option>
                 </select>
                 <input type="submit" value="Add Task"/>
             </form>
 
-                {/* <span className='complete' onClick={markComplete}>Mark Complete</span>
-                <span className='incomplete' onClick={markIncomplete}>Mark Incomplete</span>
-                <span className='delete' onClick={deleteSelected}>Delete</span> */}
-
-            {list && list.map((element, Task) => 
-            <div className="task" key={Task}>
-                <div>
+            {list.map((task, index) => (
+                <div className="task" key={index}>
                     <div>
-                        
-                        <input type="checkbox" onClick={function selectedTask(event) {
-                            // clicking checkbox will store task id to separate array
-                            // const item = selected.find(id => id === element.index) 
-                            // if (item)  { // MUST be indexOf
-                            //     item.completed = false
-                            //     // selected = selected.splice(selected.indexOf(list.index),1)
-
-                            // }
-                            //  else {
-                            //     item.completed = true
-                            //     // selected.push(list.index)
-                            // }
-                            element.completed = event.currentTarget.checked
-                            setHandleClickUpdate(handleClickUpdate + 1)
-                            console.log(selected)
-                            console.log(element)
-                        }} />
-
-
-
-                        <h3>{element.name}</h3>
+                        <div>
+                            <input type="checkbox" onClick={completeTask}/>
+                            <h3>{task.name}</h3>
+                        </div>
+                        <h4>Priority: {task.priority}</h4>
+                        <h4>Status: {task.completed}</h4> 
                     </div>
-                    <h4>Priority: {element.priority}</h4>
-                    <h4>Status: {element.completed ? "Completed" : "Incomplete"} </h4> 
-                </div>
-            </div>  
-            )}
+                </div>    
+            ))}
+            
         </div>
     )
 }
