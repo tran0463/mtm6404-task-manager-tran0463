@@ -7,16 +7,14 @@ import Footer from './comp/Footer'
 import * as styles from './style.css'
 
 // let selectedList = ''
-let selectedList = 'Shopping'
+// let selectedList = 'Shopping'
 
 function Page() {
     return (
         <div>
         <Header />
         <Sidebar />
-        <Main 
-        showList={selectedList}
-        />
+        <Main />
         <Footer />
         </div>
     )

@@ -37,16 +37,25 @@ h2 {
 }
 
 .main {
-  margin-left: 200px;
-  padding: 100px;
+  width: 70%;
+  margin-left: 15%;
+  margin-top: 50px;
 }
 
 .task {
   display: flex;
   justify-content: space-between;
 }
-.task div {
+.task > div {
   display: flex;
+  width: 100%;
+}
+.task > div > div {
+  display: flex;
+  width: 50%;
+}
+.task > div h4 {
+  margin-left: 200px;
 }
 
 .footer {
@@ -60,4 +69,9 @@ h2 {
 
 ul li {
   list-style: none;
+}
+
+span {
+  display: inline-block;
+  margin: 10px 40px;
 }/*# sourceMappingURL=style.css.map */

@@ -1,135 +1,104 @@
-// export default function Main() {
-//     return (
-//         <div className="main">
-//             <h2>Tasks</h2>
-//             <div className="task">
-//                 <div>
-//                     <input type="checkbox" />
-//                     <h3>Task Name</h3>
-//                 </div>
-//             </div>
-//             <div className="task">
-//                 <div>
-//                     <input type="checkbox" />
-//                     <h3>Task Name</h3>
-//                 </div>
-//             </div>
-//             <div className="task">
-//                 <div>
-//                     <input type="checkbox" />
-//                     <h3>Task Name</h3>
-//                 </div>
-//             </div>
-//             <div className="task">
-//                 <div>
-//                     <input type="checkbox" />
-//                     <h3>Task Name</h3>
-//                 </div>
-//             </div>
-//             <div className="task">
-//                 <div>
-//                     <input type="checkbox" />
-//                     <h3>Task Name</h3>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
-
-
-// Most useless way to use child prop
-function Title (props) {
-    return <h2>{props.children}</h2>
+import { useState } from 'react'
+let list = []
+let id = 1
+let selected = []
+if (localStorage.length > 0) {
+    list = JSON.parse(localStorage.getItem('list'))
+    id = list.length
 }
+console.log(list)
 
-// list rendering
 
-const Shopping = [
-    {listItem:"apple"},
-    {listItem:"banana"},
-    {listItem:"cucumber"},
-    {listItem:"pineapple"},
-    {listItem:"watermelon"}
-]
-const Gifts = [
-    {listItem:"dog toy"},
-    {listItem:"knife"},
-    {listItem:"desk"},
-    {listItem:"computer"},
-    {listItem:"car"}
-]
-const Games = [
-    {listItem:"go"},
-    {listItem:"checkers"},
-    {listItem:"chess"},
-    {listItem:"battleship"},
-    {listItem:"risk"}
-]
-const Empty = []
+// sort list before display
+let sortedList
+function sortList() {
+    sortedList = list.sort((l1, l2) => (l1.priority > l2.priority) ? 1 : (l1.priority < l2.priority) ? -1 : 0)
+}
+sortList()
 
-// Conditional Rendering
-export default function Main({showList}) {
-    //Depending on the prop passed, it will show a different list
+console.log(sortedList)
+export default function Main() {
+    const [count, setCount] = useState("")
+
+    const handleClick = (e) => {
+        e.preventDefault()
+        list.push({
+            name: e.target[0].value,
+            priority: e.target[1].value,
+            status: e.target[2].value,
+            index: id
+        })
+        localStorage.setItem("list", JSON.stringify(list))
+        setCount(count + 1)
+        id++
+        sortList()
+    }
+
+    const markComplete = (e) => {
+        selected.forEach(element => {
+            console.log(element)
+            list[element].status = 'Complete'
+            console.log(list)
+        });
+    }    
+    
+    const markIncomplete = (e) => {
         
-        if (showList == "Shopping") {
-        const list = Shopping.map(item => 
-        <div className="task">
-            <div>
-                <input type="checkbox" />
-                <ul>{item.listItem}</ul>
-            </div>
-        </div>)
-
-        return (
-            <div className="main">
-                {list.length > 0 && <Title>{showList}</Title>}
-                {list.length == 0 && <h2>This list is currently empty</h2>}
-                {/* Possible to have both elements rendered in one condition check? */}
-                {list.length > 0 && <div>{list}</div>}
-            </div>
-    )}
-
-     else if (showList == "Gifts") {
-
-        const list = Gifts.map(item => 
-            <div className="task">
-                <div>
-                    <input type="checkbox" />
-                    <ul>{item.listItem}</ul>
-                </div>
-            </div>)
-
-        return (
-            <div className="main">
-                {list.length > 0 && <Title>{showList}</Title>}
-                {list.length == 0 && <h2>This list is currently empty</h2>}
-                {list.length > 0 && <div>{list}</div>}
-            </div>
-    )} 
+    }    
     
-    else if (showList == "Games") {
+    const deleteSelected = (e) => {
+        
+    }
 
-        const list = Games.map(item => 
-            <div className="task">
+    return (
+        <div className='main'>
+            <form onSubmit={handleClick}>
+                <label for="task">Task: </label>
+                <input id="task" type="text" />
+                <select name="priority">
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                    <option value={' '}>!</option>
+                </select>
+                <select name="status">
+                    <option value={'Incomplete'}>Incomplete</option>
+                    <option value={'Complete'}>Complete</option>
+                </select>
+                <input type="submit" value="Add Task"/>
+            </form>
+
+                <span className='complete' onClick={markComplete}>Mark Complete</span>
+                <span className='incomplete' onClick={markIncomplete}>Mark Incomplete</span>
+                <span className='delete' onClick={deleteSelected}>Delete</span>
+
+            {list && list.map((list, Task) => 
+            <div className="task" key={Task}>
                 <div>
-                    <input type="checkbox" />
-                    <ul>{item.listItem}</ul>
+                    <div>
+                        
+                        <input type="checkbox" onClick={function selectedTask() {
+                            // clicking checkbox will store task id to separate array
+                            if (selected.find(id => id === list.index)) {
+                                selected.splice(selected.indexOf(id),1)
+                            } else {
+                                selected.push(list.index)
+                            }
+                            console.log(selected)
+                            console.log(list)
+                        }} />
+
+
+
+                        <h3>{list.name}</h3>
+                    </div>
+                    <h4>Priority: {list.priority}</h4>
+                    <h4>Status: {list.status}</h4>
                 </div>
-            </div>)
-            
-        return (
-            <div className="main">
-                {list.length > 0 && <Title>{showList}</Title>}
-                {list.length == 0 && <h2>This list is currently empty</h2>}
-                {list.length > 0 && <div>{list}</div>}
-            </div>
-    )} 
-    
-    else {
-        // default case
-        return (
-            <div className="main">
-                <p>No list selected</p>
-            </div>
-        )} 
+            </div>  
+            )}
+        </div>
+    )
 }
