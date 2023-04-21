@@ -15,33 +15,52 @@ function sortList() {
 }
 sortList()
 
-console.log(sortedList)
 export default function Main() {
     const [task, setTask] = useState(list)
-    const [status, setStatus] = useState(list.completed)
 
-    const completeTask = (e) => {
-        setStatus(
-            list.completed = "Complete",
-            console.log(task)
-        )
+    function updateStatus(e) {
+        if (task[e.target.id].status == 'Incomplete' ) {
+          task[e.target.id].status = 'Complete' 
+        }
+        else task[e.target.id].status = 'Incomplete'
+        
+        // force state to update when clicking checkbox to update whether task is complete
+        setTask(force => {
+            return {...force}
+        })
+
+        // update the local storage immediately on completion
+        localStorage.setItem("list", JSON.stringify(list))
     }
 
-    const handleClick = (e) => {
-        e.preventDefault()
+    const handleClick = (ev) => {
+        const {
+            target: { id, value },
+        } = ev;
+
+        ev.preventDefault()
         setTask(
             list.push({
-            name: e.target[0].value,
-            priority: e.target[1].value,
-            completed: e.target[2].value,
+            name: ev.target[0].value,
+            priority: ev.target[1].value,
+            status: ev.target[2].value,
+            id: list.length
             // index:
         })
         )
         localStorage.setItem("list", JSON.stringify(list))
     }
+    sortList()  
+
+    // function createNewList(e) {
+    //     e.preventDefault()
         
-        sortList()  
+    //     const userList = new Array(e.target[0].value)
+    //     console.log(userList)
+    // }
+
     return (
+        // render form to add task
         <div className='main'>
             <form onSubmit={handleClick}>
                 <label for="task">Task: </label>
@@ -59,16 +78,28 @@ export default function Main() {
                 </select>
                 <input type="submit" value="Add Task"/>
             </form>
+            <form onSubmit={createNewList}>
+            {/* <label for="newList">Create new list: </label>
+            <input id="newList" type="text" />
+            <input type="submit" value="Add List"/> */}
+            </form>
 
+
+            {/* render list */}
             {list.map((task, index) => (
                 <div className="task" key={index}>
                     <div>
                         <div>
-                            <input type="checkbox" onClick={completeTask}/>
+                            <input 
+                            type="checkbox"
+                            defaultChecked={task.status === "Complete"}
+                            id={index}
+                            onClick={updateStatus}
+                            />
                             <h3>{task.name}</h3>
                         </div>
                         <h4>Priority: {task.priority}</h4>
-                        <h4>Status: {task.completed}</h4> 
+                        <h4>Status: {task.status}</h4> 
                     </div>
                 </div>    
             ))}
