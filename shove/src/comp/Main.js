@@ -77,13 +77,7 @@ export default function Main() {
                     <option>Complete</option>
                 </select>
                 <input type="submit" value="Add Task"/>
-            </form>
-            <form onSubmit={createNewList}>
-            {/* <label for="newList">Create new list: </label>
-            <input id="newList" type="text" />
-            <input type="submit" value="Add List"/> */}
-            </form>
-
+            </form>    
 
             {/* render list */}
             {list.map((task, index) => (
@@ -92,6 +86,7 @@ export default function Main() {
                         <div>
                             <input 
                             type="checkbox"
+                            className="check"
                             defaultChecked={task.status === "Complete"}
                             id={index}
                             onClick={updateStatus}
@@ -99,7 +94,8 @@ export default function Main() {
                             <h3>{task.name}</h3>
                         </div>
                         <h4>Priority: {task.priority}</h4>
-                        <h4>Status: {task.status}</h4> 
+                        <h4>Status: {task.status}</h4>
+                        <button>Delete Task</button> 
                     </div>
                 </div>    
             ))}

@@ -1,9 +1,21 @@
-export default function Headers() {
+import { Route, Routes, Link } from "react-router-dom";
+import Lists from './Lists'
+import Main from './Main'
+
+export default function Header() {
     return (
+        <>
         <div className="header">
-            <h1>Shove</h1>
-            <h2><a>Upcoming</a></h2>
-            <h2><a>Calendar</a></h2>
+            <Link to='/'><h1>Shove</h1></Link>
+            <Link to='/Lists'><h2>Lists</h2></Link>
+
+
         </div>
+        
+        <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/Lists' element={<Lists />} />
+        </Routes>
+        </>
     )
 }

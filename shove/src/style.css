@@ -46,16 +46,28 @@ h2 {
   display: flex;
   justify-content: space-between;
 }
+.task:nth-child(2n+1) {
+  background-color: #151515;
+  border-radius: 15px;
+}
 .task > div {
   display: flex;
   width: 100%;
+  align-items: center;
+  margin: auto;
 }
 .task > div > div {
   display: flex;
-  width: 50%;
+  width: 40%;
+  margin: 0 0 0 20px;
 }
 .task > div h4 {
-  margin-left: 200px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.task > div button {
+  height: 50%;
+  margin-right: 20px;
 }
 
 .footer {

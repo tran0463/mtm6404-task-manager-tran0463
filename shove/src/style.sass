@@ -39,15 +39,28 @@ h2
 .task
     display: flex
     justify-content: space-between
+    &:nth-child(2n+1)
+        background-color: #151515
+        border-radius: 15px
+        // opacity: 20%
     > div
         display: flex
         width: 100%
+        align-items: center
+        margin: auto
+        
         > div
             display: flex
-            width: 50%
-        h4
-            margin-left: 200px
+            width: 40%
+            margin: 0 0 0 20px
 
+                
+        h4
+            margin-left: 100px
+            margin-right: 100px
+        button
+            height: 50%
+            margin-right: 20px
 .footer 
     text-align: center
     position: fixed
